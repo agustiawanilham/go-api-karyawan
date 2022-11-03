@@ -5,20 +5,12 @@ import (
 	karyawanHandler "github.com/agustiawanilham/go-api-karyawan/handlers"
 	"github.com/agustiawanilham/go-api-karyawan/middleware"
 	"github.com/gofiber/fiber/v2"
-	swagger "github.com/gofiber/swagger"
 )
 
 // SetupRoutes setup all routes
 func SetupRoutes(app *fiber.App) {
 	// Grouping by api
 	api := app.Group("/api/v1")
-
-	// Setup swagger
-	route := api.Group("/swagger")
-	route.Get("*", swagger.HandlerDefault)
-	route.Post("*", swagger.HandlerDefault)
-	route.Patch("*", swagger.HandlerDefault)
-	route.Delete("*", swagger.HandlerDefault)
 
 	// Auth endpoints
 	auth := api.Group("/auth")

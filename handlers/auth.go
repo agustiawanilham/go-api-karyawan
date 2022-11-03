@@ -12,6 +12,12 @@ type TokenRequest struct {
 	Password string `json:"password"`
 }
 
+// LoginUser Login to account user
+// @Summary      Login to account user
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Router       /api/v1/auth/login [post]
 func LoginUser(c *fiber.Ctx) error {
 	var request TokenRequest
 	var user models.User
@@ -52,6 +58,13 @@ func LoginUser(c *fiber.Ctx) error {
 	})
 }
 
+// RegisterUser Register account user
+// @Summary      Register account user
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int  true  "Account ID"
+// @Router       /api/v1/auth/register [post]
 func RegisterUser(c *fiber.Ctx) error {
 	var user models.User
 

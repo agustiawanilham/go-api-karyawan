@@ -1,4 +1,34 @@
+basePath: /
+host: localhost:8080
 info:
   contact: {}
-paths: {}
+  title: Karyawan API
+  version: "1.0"
+paths:
+  /api/v1/auth/:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses: {}
+      summary: Login to account user
+      tags:
+      - auth
+  /api/v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Register account user
+      tags:
+      - auth
 swagger: "2.0"
