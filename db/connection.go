@@ -1,8 +1,10 @@
-package models
+package db
 
 import (
 	"fmt"
+	"log"
 
+	"github.com/agustiawanilham/go-api-karyawan/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -15,6 +17,9 @@ func ConnectDatabase() {
 		panic(fmt.Sprintf("failed to connect database: %s", err))
 	}
 
-    db.AutoMigrate(&Karyawan{})
-    DB = db
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Karyawan{})
+
+	log.Println("Database Migration Completed!")
+	DB = db
 }
