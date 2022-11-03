@@ -2,7 +2,10 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/agustiawanilham/go-api-karyawan/db"
+	"github.com/agustiawanilham/go-api-karyawan/helpers"
 	"github.com/agustiawanilham/go-api-karyawan/models"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -11,9 +14,14 @@ import (
 // GetAll Get all data karyawan with pagination
 func GetAll(c *fiber.Ctx) error {
 	var karyawans []models.Karyawan
-	db.DB.Find(&karyawans)
+	fetchParam := helpers.FetchParamsPaginationFromRequest(c)
+	db.DB.Limit(int(fetchParam.Limit)).Find(&karyawans, "ID > ?", fetchParam.CursorID)
 
-	return c.Status(fiber.StatusOK).JSON(karyawans)
+	response := helpers.StandarResponse{
+		Data:    &karyawans,
+		Message: "success",
+	}
+	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 // GetData Get data karyawan by ID
@@ -21,39 +29,47 @@ func GetData(c *fiber.Ctx) error {
 	paramsID := c.Params("id")
 	var karyawan models.Karyawan
 
+	response := helpers.StandarResponse{
+		Data:    nil,
+		Message: "success",
+	}
+
 	if err := db.DB.First(&karyawan, paramsID).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
-			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-				"message": "Data not found",
-			})
-
+			response.Message = "Data not found"
+			return c.Status(fiber.StatusNotFound).JSON(response)
 		}
 
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": "Data not found",
-		})
+		response.Message = fmt.Sprintf("Failed to Get Data with id : %s", paramsID)
+		return c.Status(fiber.StatusInternalServerError).JSON(response)
 
 	}
 
-	return c.JSON(karyawan)
+	response.Data = &karyawan
+
+	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 // Create Insert new data karyawan
 func Create(c *fiber.Ctx) error {
 	var karyawan models.Karyawan
+
+	response := helpers.StandarResponse{
+		Data:    nil,
+		Message: "Success add",
+	}
+
 	if err := c.BodyParser(&karyawan); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		response.Message = err.Error()
+		return c.Status(fiber.StatusBadRequest).JSON(response)
 	}
 
 	if err := db.DB.Create(&karyawan).Error; err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		response.Message = err.Error()
+		return c.Status(fiber.StatusInternalServerError).JSON(response)
 	}
 
-	return c.JSON(karyawan)
+	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 // Update Update data karyawan
@@ -61,21 +77,22 @@ func Update(c *fiber.Ctx) error {
 	paramsID := c.Params("id")
 	var karyawan models.Karyawan
 
+	response := helpers.StandarResponse{
+		Data:    nil,
+		Message: "Success data",
+	}
+
 	if err := c.BodyParser(&karyawan); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": err.Error(),
-		})
+		response.Message = err.Error()
+		return c.Status(fiber.StatusBadRequest).JSON(response)
 	}
 
 	if db.DB.Where("id = ? ", paramsID).Updates(&karyawan).RowsAffected == 0 {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"message": "Cannot update data",
-		})
+		response.Message = "Cannot update data"
+		return c.Status(fiber.StatusBadRequest).JSON(response)
 	}
 
-	return c.JSON(fiber.Map{
-		"message": "Update success",
-	})
+	return c.Status(fiber.StatusOK).JSON(response)
 }
 
 // Delete data karyawan
@@ -83,13 +100,15 @@ func Delete(c *fiber.Ctx) error {
 	paramsID := c.Params("id")
 	var karyawan models.Karyawan
 
-	if db.DB.Delete(&karyawan, paramsID).RowsAffected == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"message": "Cannot delete data",
-		})
+	response := helpers.StandarResponse{
+		Data:    nil,
+		Message: "Success add",
 	}
 
-	return c.JSON(fiber.Map{
-		"message": "Delete success",
-	})
+	if db.DB.Delete(&karyawan, paramsID).RowsAffected == 0 {
+		response.Message = "Failed to delete data"
+		return c.Status(fiber.StatusNotFound).JSON(response)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(response)
 }
