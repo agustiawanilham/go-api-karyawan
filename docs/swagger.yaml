@@ -21,17 +21,46 @@ definitions:
       message:
         type: string
     type: object
-  models.Karyawan:
+  models.Departement:
     properties:
       createdAt:
         type: string
       deletedAt:
         $ref: '#/definitions/gorm.DeletedAt'
+      departementCode:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      namedepartment:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.Karyawan:
+    properties:
+      address:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      departement:
+        $ref: '#/definitions/models.Departement'
+      departementcode:
+        type: string
       dob:
         type: string
       id:
         type: integer
+      joindate:
+        type: string
       name:
+        type: string
+      no_handphone:
+        type: string
+      role:
         type: string
       updatedAt:
         type: string

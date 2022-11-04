@@ -322,7 +322,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Karyawan": {
+        "models.Departement": {
             "type": "object",
             "properties": {
                 "createdAt": {
@@ -331,13 +331,57 @@ const docTemplate = `{
                 "deletedAt": {
                     "$ref": "#/definitions/gorm.DeletedAt"
                 },
+                "departementCode": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "namedepartment": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Karyawan": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "departement": {
+                    "$ref": "#/definitions/models.Departement"
+                },
+                "departementcode": {
+                    "type": "string"
+                },
                 "dob": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
+                "joindate": {
+                    "type": "string"
+                },
                 "name": {
+                    "type": "string"
+                },
+                "no_handphone": {
+                    "type": "string"
+                },
+                "role": {
                     "type": "string"
                 },
                 "updatedAt": {

@@ -1,3 +1,4 @@
+// Package db Handling connection to database
 package db
 
 import (
@@ -9,8 +10,10 @@ import (
 	"gorm.io/gorm"
 )
 
+// DB ...
 var DB *gorm.DB
 
+// ConnectDatabase Handling Connecting to database and Migration
 func ConnectDatabase() {
 	db, err := gorm.Open(sqlite.Open("karyawan.db"), &gorm.Config{})
 	if err != nil {
@@ -19,6 +22,7 @@ func ConnectDatabase() {
 
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Karyawan{})
+	db.AutoMigrate(&models.Departement{})
 
 	log.Println("Database Migration Completed!")
 	DB = db
