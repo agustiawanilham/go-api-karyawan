@@ -12,6 +12,13 @@ import (
 )
 
 // GetAll Get all data karyawan with pagination
+//
+//	@Summary      Get all data karyawan with pagination
+//	@Tags         karyawan
+//	@Accept       json
+//	@Produce      json
+//	@Success      200  {object}  helpers.StandarResponse{data=[]models.Karyawan}
+//	@Router       /api/v1/karyawan [get]
 func GetAll(c *fiber.Ctx) error {
 	var karyawans []models.Karyawan
 	fetchParam := helpers.FetchParamsPaginationFromRequest(c)
@@ -24,7 +31,16 @@ func GetAll(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
-// GetData Get data karyawan by ID
+// GetData             godoc
+//
+//	@Summary      Get data karyawan by ID
+//	@Tags         karyawan
+//	@Accept       json
+//	@Produce      json
+//	@Param        Authorization  header    string  true  "Authentication header"
+//	@Param        id    path      int     true  "Karyawan Id"
+//	@Success      200  {object}  helpers.StandarResponse{data=models.Karyawan}
+//	@Router       /api/v1/karyawan/{id} [get]
 func GetData(c *fiber.Ctx) error {
 	paramsID := c.Params("id")
 	var karyawan models.Karyawan
@@ -50,7 +66,16 @@ func GetData(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
-// Create Insert new data karyawan
+// Create             godoc
+//
+//	@Summary      Add new karyawan
+//	@Tags         karyawan
+//	@Accept       json
+//	@Produce      json
+//	@Param        Authorization  header    string  true  "Authentication header"
+//	@Param        karyawan body models.Karyawan true "Karyawan JSON"
+//	@Success      200  {object}  helpers.StandarResponse
+//	@Router       /api/v1/karyawan [post]
 func Create(c *fiber.Ctx) error {
 	var karyawan models.Karyawan
 
@@ -72,7 +97,17 @@ func Create(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
-// Update Update data karyawan
+// Update             godoc
+//
+//	@Summary      Update existing karyawan
+//	@Tags         karyawan
+//	@Accept       json
+//	@Produce      json
+//	@Param        Authorization  header    string  true  "Authentication header"
+//	@Param        id    path      int     true  "Karyawan Id"
+//	@Param        karyawan body models.Karyawan true "Karyawan JSON"
+//	@Success      200  {object}  helpers.StandarResponse
+//	@Router       /api/v1/karyawan/{id} [patch]
 func Update(c *fiber.Ctx) error {
 	paramsID := c.Params("id")
 	var karyawan models.Karyawan
@@ -95,7 +130,16 @@ func Update(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
-// Delete data karyawan
+// Delete             godoc
+//
+//	@Summary      Delete data karyawan
+//	@Tags         karyawan
+//	@Accept       json
+//	@Produce      json
+//	@Param        Authorization  header    string  true  "Authentication header"
+//	@Param        id    path      int     true  "Karyawan Id"
+//	@Success      200  {object}  helpers.StandarResponse
+//	@Router       /api/v1/karyawan/{id} [delete]
 func Delete(c *fiber.Ctx) error {
 	paramsID := c.Params("id")
 	var karyawan models.Karyawan

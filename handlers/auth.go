@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// TokenRequest struct
 type TokenRequest struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`

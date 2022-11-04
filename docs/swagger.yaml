@@ -1,11 +1,42 @@
-basePath: /
+basePath: /api/v1
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  helpers.StandarResponse:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+  models.Karyawan:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      dob:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
+  description: Simple CRUD API Karyawan
   title: Karyawan API
   version: "1.0"
 paths:
-  /api/v1/auth/:
+  /api/v1/auth/login:
     post:
       consumes:
       - application/json
@@ -31,4 +62,134 @@ paths:
       summary: Register account user
       tags:
       - auth
+  /api/v1/karyawan:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.StandarResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.Karyawan'
+                  type: array
+              type: object
+      summary: Get all data karyawan with pagination
+      tags:
+      - karyawan
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Karyawan JSON
+        in: body
+        name: karyawan
+        required: true
+        schema:
+          $ref: '#/definitions/models.Karyawan'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helpers.StandarResponse'
+      summary: Add new karyawan
+      tags:
+      - karyawan
+  /api/v1/karyawan/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Karyawan Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helpers.StandarResponse'
+      summary: Delete data karyawan
+      tags:
+      - karyawan
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Karyawan Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/helpers.StandarResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Karyawan'
+              type: object
+      summary: Get data karyawan by ID
+      tags:
+      - karyawan
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Karyawan Id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Karyawan JSON
+        in: body
+        name: karyawan
+        required: true
+        schema:
+          $ref: '#/definitions/models.Karyawan'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helpers.StandarResponse'
+      summary: Update existing karyawan
+      tags:
+      - karyawan
 swagger: "2.0"
