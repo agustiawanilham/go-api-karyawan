@@ -13,11 +13,13 @@ type TokenRequest struct {
 	Password string `json:"password"`
 }
 
-// LoginUser Login to account user
+// LoginUser             godoc
 // @Summary      Login to account user
 // @Tags         auth
 // @Accept       json
 // @Produce      json
+// @Param        login {object} body TokenRequest true "User login"
+// @Success      200  {object}  TokenRequest
 // @Router       /api/v1/auth/login [post]
 func LoginUser(c *fiber.Ctx) error {
 	var request TokenRequest
@@ -54,17 +56,18 @@ func LoginUser(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"message": "Login success",
-		"token":   token,
+		"token": token,
 	})
 }
 
-// RegisterUser Register account user
+// RegisterUser             godoc
+//
 // @Summary      Register account user
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        id   path      int  true  "Account ID"
+// @Param        user body models.User  true  "User Data"
+// @Success      200  {object}  models.User
 // @Router       /api/v1/auth/register [post]
 func RegisterUser(c *fiber.Ctx) error {
 	var user models.User

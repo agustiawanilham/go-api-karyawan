@@ -8,6 +8,13 @@ definitions:
         description: Valid is true if Time is not NULL
         type: boolean
     type: object
+  handlers.TokenRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
   helpers.StandarResponse:
     properties:
       data: {}
@@ -29,6 +36,25 @@ definitions:
       updatedAt:
         type: string
     type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
 host: localhost:8080
 info:
   contact: {}
@@ -40,9 +66,20 @@ paths:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: User login
+        in: body
+        name: '{object}'
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.TokenRequest'
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.TokenRequest'
       summary: Login to account user
       tags:
       - auth
@@ -51,14 +88,19 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: Account ID
-        in: path
-        name: id
+      - description: User Data
+        in: body
+        name: user
         required: true
-        type: integer
+        schema:
+          $ref: '#/definitions/models.User'
       produces:
       - application/json
-      responses: {}
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
       summary: Register account user
       tags:
       - auth
