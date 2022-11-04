@@ -1,3 +1,4 @@
+// Package routes Handling all routes
 package routes
 
 import (
